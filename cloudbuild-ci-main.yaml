@@ -7,19 +7,19 @@ steps:
   - |
     skaffold build --profile prod --default-repo="gcr.io/${PROJECT_ID}/cymbal-bank/release" --tag ${SHORT_SHA}
 - name: 'gcr.io/cloud-builders/gcloud'
-  id: Image tags -> cymbalbank-app-config prod manifests 
+  id: Image tags -> cymbal-config prod manifests 
   entrypoint: 'bash'
   args:
    - '-eEuo'
    - 'pipefail'
    - '-c'
    - |-
-    git clone https://github.com/$$GITHUB_USERNAME/cymbalbank-app-config && \
-    cd cymbalbank-app-config 
+    git clone https://github.com/$$GITHUB_USERNAME/cymbal-config && \
+    cd cymbal-config 
     
     git config user.email $$GITHUB_EMAIL
     git config user.name $$GITHUB_USERNAME 
-    git remote set-url origin https://$$GITHUB_USERNAME:$$GITHUB_TOKEN@github.com/$$GITHUB_USERNAME/cymbalbank-app-config.git
+    git remote set-url origin https://$$GITHUB_USERNAME:$$GITHUB_TOKEN@github.com/$$GITHUB_USERNAME/cymbal-config.git
 
     for f in overlays/prod/*; do 
         if [[ "$f" == 'overlays/prod/kustomization.yaml' ]]; then
@@ -39,7 +39,7 @@ steps:
 
     git add . && \
     git commit -m "Updated image tag: ${SHORT_SHA}
-    Built from commit ${COMMIT_SHA} of repository cymbalbank-app-source - main branch 
+    Built from commit ${COMMIT_SHA} of repository cymbal-source - main branch 
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
     git push origin main
   secretEnv: ['GITHUB_EMAIL', 'GITHUB_USERNAME', 'GITHUB_TOKEN']
