@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,9 +30,6 @@ RUN virtualenv -p python3.7 /env
 ENV VIRTUAL_ENV /env
 ENV PATH /env/bin:$PATH
 
-# enable gevent support in debugger
-ENV GEVENT_SUPPORT=True
-
 # explicitly set a fallback log level in case no log level is defined by Kubernetes
 ENV LOG_LEVEL info
 
@@ -41,7 +38,9 @@ ADD requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
 # Add application code.
+ADD loadgen.sh /app
 ADD locustfile.py /app
+RUN chmod +x /app/loadgen.sh
 
 # start loadgenerator
-ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --loglevel $LOG_LEVEL --no-web -c "${USERS:-10}" 2>&1
+ENTRYPOINT /app/loadgen.sh
