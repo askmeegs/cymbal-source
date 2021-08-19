@@ -35,14 +35,9 @@ profiles:
     deploy: 
       kustomize: 
         paths:
-          - "cymbalbank-app-config/overlays/dev"
+          - "cymbal-config/overlays/dev"
   - name: staging
     deploy: 
       kustomize: 
         paths:
-          - "cymbalbank-app-config/overlays/dev"
-  - name: prod
-    deploy: 
-      kustomize: 
-        paths:
-          - "cymbalbank-app-config/overlays/prod"
+          - "cymbal-config/overlays/dev"
