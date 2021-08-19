@@ -41,3 +41,8 @@ profiles:
       kustomize: 
         paths:
           - "cymbal-config/overlays/dev"
+  - name: prod
+    deploy: 
+      kustomize: 
+        paths:
+          - "cymbal-config/overlays/prod"
